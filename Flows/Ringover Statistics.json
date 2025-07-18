@@ -1,0 +1,533 @@
+﻿{
+  "created": "1752855270600",
+  "updated": "1752855270600",
+  "name": "Ringover Statistics",
+  "description": "",
+  "tags": [],
+  "pieces": [
+    "@activepieces/piece-forms",
+    "@activepieces/piece-slack",
+    "@activepieces/piece-http"
+  ],
+  "template": {
+    "displayName": "Ringover Statistics",
+    "trigger": {
+      "name": "trigger",
+      "valid": true,
+      "displayName": "Chat UI",
+      "type": "PIECE_TRIGGER",
+      "settings": {
+        "pieceName": "@activepieces/piece-forms",
+        "pieceVersion": "0.4.3",
+        "pieceType": "OFFICIAL",
+        "packageType": "REGISTRY",
+        "input": {
+          "botName": "AI Bot"
+        },
+        "inputUiInfo": {
+          "customizedInputs": {}
+        },
+        "triggerName": "chat_submission"
+      },
+      "nextAction": {
+        "name": "step_7",
+        "skip": false,
+        "type": "ROUTER",
+        "valid": true,
+        "children": [
+          {
+            "name": "step_13",
+            "skip": false,
+            "type": "PIECE",
+            "valid": true,
+            "settings": {
+              "input": {
+                "auth": "{{connections['XtjHpj0BEUf2hCE0RW2U8']}}",
+                "latest": "1752839267.039139",
+                "channel": "C096FTK7F0U",
+                "inclusive": false,
+                "includeAllMetadata": false
+              },
+              "pieceName": "@activepieces/piece-slack",
+              "pieceType": "OFFICIAL",
+              "actionName": "getChannelHistory",
+              "inputUiInfo": {
+                "customizedInputs": {}
+              },
+              "packageType": "REGISTRY",
+              "pieceVersion": "0.9.4",
+              "errorHandlingOptions": {
+                "retryOnFailure": {
+                  "value": false
+                },
+                "continueOnFailure": {
+                  "value": false
+                }
+              }
+            },
+            "nextAction": {
+              "name": "step_10",
+              "skip": false,
+              "type": "PIECE",
+              "valid": true,
+              "settings": {
+                "input": {
+                  "url": {
+                    "url": "https://slack.com/api/chat.delete"
+                  },
+                  "auth": "{{connections['XtjHpj0BEUf2hCE0RW2U8']}}",
+                  "method": "POST",
+                  "headers": {
+                    "channel": "C096FTK7F0U"
+                  },
+                  "failsafe": false,
+                  "queryParams": {},
+                  "useUserToken": true
+                },
+                "pieceName": "@activepieces/piece-slack",
+                "pieceType": "OFFICIAL",
+                "actionName": "custom_api_call",
+                "inputUiInfo": {
+                  "schema": {
+                    "url": {
+                      "url": {
+                        "type": "SHORT_TEXT",
+                        "required": true,
+                        "description": "You can either use the full URL or the relative path to the base URL\ni.e https://slack.com/api/resource or /resource",
+                        "displayName": "URL",
+                        "defaultValue": "https://slack.com/api"
+                      }
+                    }
+                  },
+                  "customizedInputs": {}
+                },
+                "packageType": "REGISTRY",
+                "pieceVersion": "0.9.4",
+                "errorHandlingOptions": {
+                  "retryOnFailure": {
+                    "value": false
+                  },
+                  "continueOnFailure": {
+                    "value": false
+                  }
+                }
+              },
+              "displayName": "Custom API Call"
+            },
+            "displayName": "Get channel history"
+          },
+          {
+            "name": "step_1",
+            "skip": false,
+            "type": "PIECE",
+            "valid": true,
+            "settings": {
+              "input": {
+                "url": "https://public-api.ringover.com/v2/calls\n",
+                "body": {
+                  "data": {
+                    "long": true,
+                    "short": true,
+                    "filter": "ALL",
+                    "end_date": "2025-07-18T21:59:59.999Z",
+                    "start_date": "2025-07-14T22:00:00.000Z",
+                    "limit_count": 1000,
+                    "exclude_long_value": 0,
+                    "exclude_short_value": 0
+                  }
+                },
+                "method": "POST",
+                "headers": {
+                  "Accept": "application/json",
+                  "Content-Type": "application/json",
+                  "Authorization": "cba6835e5cfb34a56f0549755d4b23a236960912"
+                },
+                "authType": "NONE",
+                "body_type": "json",
+                "use_proxy": false,
+                "authFields": {},
+                "queryParams": {},
+                "proxy_settings": {}
+              },
+              "pieceName": "@activepieces/piece-http",
+              "pieceType": "OFFICIAL",
+              "actionName": "send_request",
+              "inputUiInfo": {
+                "schema": {
+                  "body": {
+                    "data": {
+                      "type": "JSON",
+                      "required": true,
+                      "displayName": "JSON Body"
+                    }
+                  },
+                  "authFields": {},
+                  "proxy_settings": {}
+                },
+                "customizedInputs": {
+                  "queryParams": false
+                }
+              },
+              "packageType": "REGISTRY",
+              "pieceVersion": "0.8.1",
+              "errorHandlingOptions": {
+                "retryOnFailure": {
+                  "value": false
+                },
+                "continueOnFailure": {
+                  "value": false
+                }
+              }
+            },
+            "nextAction": {
+              "name": "step_3",
+              "skip": false,
+              "type": "PIECE",
+              "valid": true,
+              "settings": {
+                "input": {
+                  "url": "https://public-api.ringover.com/v2/tags\n",
+                  "body": {},
+                  "method": "GET",
+                  "headers": {
+                    "Accept": "application/json",
+                    "Content-Type": "application/json",
+                    "Authorization": "cba6835e5cfb34a56f0549755d4b23a236960912"
+                  },
+                  "authType": "NONE",
+                  "body_type": "none",
+                  "use_proxy": false,
+                  "authFields": {},
+                  "queryParams": {},
+                  "proxy_settings": {}
+                },
+                "pieceName": "@activepieces/piece-http",
+                "pieceType": "OFFICIAL",
+                "actionName": "send_request",
+                "inputUiInfo": {
+                  "schema": {
+                    "body": {},
+                    "authFields": {},
+                    "proxy_settings": {}
+                  },
+                  "customizedInputs": {
+                    "queryParams": false
+                  }
+                },
+                "packageType": "REGISTRY",
+                "pieceVersion": "0.8.1",
+                "errorHandlingOptions": {
+                  "retryOnFailure": {
+                    "value": false
+                  },
+                  "continueOnFailure": {
+                    "value": false
+                  }
+                }
+              },
+              "nextAction": {
+                "name": "step_2",
+                "skip": false,
+                "type": "CODE",
+                "valid": true,
+                "settings": {
+                  "input": {
+                    "body": "{{step_1['body']['call_list']}}"
+                  },
+                  "sourceCode": {
+                    "code": "export const code = async (inputs) => {\n  const calls = inputs.body;\n\n  if (!Array.isArray(calls)) {\n    throw new Error(\"body must be an array of calls\");\n  }\n\n  const totalCalls = calls.length;\n\n  const mainTagMap = {\n    \"Call fail\": 16575522,\n    \"Quick Talk\": 16455521,\n    \"Mauvais Numéro\": 17085525,\n    \"Convo\": 16515534,\n    \"Msg Vocal\": 16515533,\n    \"SQL\": 16845528,\n    \"RIP\": 16995524\n  };\n\n  const tagCounts = {\n    \"Call fail\": 0,\n    \"Quick Talk\": 0,\n    \"Mauvais Numéro\": 0,\n    \"Convo\": 0,\n    \"Msg Vocal\": 0,\n    \"SQL\": 0,\n    \"RIP\": 0\n  };\n\n  for (const call of calls) {\n    const tags = Array.isArray(call.tags) ? call.tags : [];\n\n    for (const tag of tags) {\n      const tagId = tag?.tag_id;\n\n      for (const [name, id] of Object.entries(mainTagMap)) {\n        if (tagId === id) {\n          tagCounts[name]++;\n          // ❌ pas de break ici → on continue pour compter tous les tags de l’appel\n        }\n      }\n    }\n  }\n\n  const mainStats = Object.entries(tagCounts).map(([tag, count]) => {\n    const percentage = totalCalls > 0 ? Math.round((count / totalCalls) * 100) : 0;\n    return {\n      tag: `${tag}: ${count} (${percentage}%)`,\n      count,\n      percentage\n    };\n  });\n\n  return {\n    mainStats,\n    totalCalls\n  };\n};\n",
+                    "packageJson": "{}"
+                  },
+                  "inputUiInfo": {
+                    "customizedInputs": {}
+                  },
+                  "errorHandlingOptions": {
+                    "retryOnFailure": {
+                      "value": false
+                    },
+                    "continueOnFailure": {
+                      "value": false
+                    }
+                  }
+                },
+                "nextAction": {
+                  "name": "step_4",
+                  "skip": false,
+                  "type": "CODE",
+                  "valid": true,
+                  "settings": {
+                    "input": {
+                      "body": "{{step_1['body']['call_list']}}"
+                    },
+                    "sourceCode": {
+                      "code": "export const code = async (inputs) => {\n  const calls = inputs.body;\n\n  if (!Array.isArray(calls)) {\n    throw new Error(\"body must be an array of calls\");\n  }\n\n  const totalCalls = calls.length;\n\n  // Mapping des tags principaux\n  const mainTagMap = {\n    \"Call fail\": 16575522,\n    \"Quick Talk\": 16455521,\n    \"Mauvais Numéro\": 17085525,\n    \"Convo\": 16515534,\n    \"Msg Vocal\": 16515533,\n    \"SQL\": 16845528,\n    \"RIP\": 16995524\n  };\n\n  // Mapping des tags du groupe Objections\n  const objectionTagsMap = {\n    \"Refus\": 16935520,\n    \"Big IT Team\": 22365518,\n    \"Already have working solution\": 22335519,\n    \"Not enough mouvements\": 22395524,\n    \"Budget Cuts\": 22455510\n  };\n\n  const tagCounts = Object.fromEntries(\n    Object.keys(mainTagMap).map((key) => [key, 0])\n  );\n\n  const ripCalls = [];\n\n  for (const call of calls) {\n    const tags = Array.isArray(call.tags) ? call.tags : [];\n\n    let hasRIP = false;\n\n    for (const tag of tags) {\n      const tagId = tag?.tag_id;\n\n      for (const [name, id] of Object.entries(mainTagMap)) {\n        if (tagId === id) {\n          tagCounts[name]++;\n          if (name === \"RIP\") {\n            hasRIP = true;\n          }\n        }\n      }\n    }\n\n    if (hasRIP) {\n      ripCalls.push(call);\n    }\n  }\n\n  // Sous-groupe Objections dans les appels RIP\n  const objectionCounts = {};\n\n  for (const call of ripCalls) {\n    const tags = Array.isArray(call.tags) ? call.tags : [];\n\n    for (const tag of tags) {\n      const tagId = tag?.tag_id;\n\n      for (const [name, id] of Object.entries(objectionTagsMap)) {\n        if (tagId === id) {\n          objectionCounts[name] = (objectionCounts[name] || 0) + 1;\n        }\n      }\n    }\n  }\n\n  const totalRip = ripCalls.length;\n\n  const ripObjections = Object.entries(objectionCounts).map(([name, count]) => ({\n    tag: name,\n    count: Number(count),\n    percentage: totalRip > 0 ? Math.round((Number(count) / totalRip) * 100) : 0\n  }));\n\n  const mainStats = Object.entries(tagCounts).map(([tag, count]) => {\n    const percentage = totalCalls > 0 ? Math.round((count / totalCalls) * 100) : 0;\n    return {\n      tag: `${tag}: ${count} (${percentage}%)`,\n      count,\n      percentage\n    };\n  });\n\n  return {\n    mainStats,\n    totalCalls,\n    RIP_objections: ripObjections\n  };\n};\n",
+                      "packageJson": "{}"
+                    },
+                    "inputUiInfo": {
+                      "customizedInputs": {}
+                    },
+                    "errorHandlingOptions": {
+                      "retryOnFailure": {
+                        "value": false
+                      },
+                      "continueOnFailure": {
+                        "value": false
+                      }
+                    }
+                  },
+                  "nextAction": {
+                    "name": "step_5",
+                    "skip": false,
+                    "type": "CODE",
+                    "valid": true,
+                    "settings": {
+                      "input": {
+                        "body": "{{step_1['body']['call_list']}}"
+                      },
+                      "sourceCode": {
+                        "code": "export const code = async (inputs) => {\n  const calls = inputs.body;\n\n  if (!Array.isArray(calls)) {\n    throw new Error(\"body must be an array of calls\");\n  }\n\n  const totalCalls = calls.length;\n\n  // Tags principaux\n  const mainTagMap = {\n    \"Call fail\": 16575522,\n    \"Quick Talk\": 16455521,\n    \"Mauvais Numéro\": 17085525,\n    \"Convo\": 16515534,\n    \"Msg Vocal\": 16515533,\n    \"SQL\": 16845528,\n    \"RIP\": 16995524,\n    \"Already have working solution\": 22335519\n  };\n\n  // Groupe : Solutions\n  const solutionTagsMap = {\n    \"Ivanti\": 22335520,\n    \"Jira\": 22335521,\n    \"Custom Scripts\": 22335522,\n    \"GLPI\": 22245531,\n    \"Freshservices\": 22425515,\n    \"Rzillient\": 22365519,\n    \"SIRH Module\": 22395525,\n    \"ServiceNow\": 22305523,\n    \"Youzer\": 22455512,\n    \"Solution Maison\": 22455513,\n    \"SSO\": 22455511\n  };\n\n  const tagCounts = Object.fromEntries(\n    Object.keys(mainTagMap).map((key) => [key, 0])\n  );\n\n  const solutionCalls = [];\n\n  for (const call of calls) {\n    const tags = Array.isArray(call.tags) ? call.tags : [];\n\n    let hasSolutionBaseTag = false;\n\n    for (const tag of tags) {\n      const tagId = tag?.tag_id;\n\n      for (const [name, id] of Object.entries(mainTagMap)) {\n        if (tagId === id) {\n          tagCounts[name]++;\n          if (name === \"Already have working solution\") {\n            hasSolutionBaseTag = true;\n          }\n        }\n      }\n    }\n\n    if (hasSolutionBaseTag) {\n      solutionCalls.push(call);\n    }\n  }\n\n  // Analyse des solutions dans les appels \"Already have working solution\"\n  const solutionCounts = {};\n\n  for (const call of solutionCalls) {\n    const tags = Array.isArray(call.tags) ? call.tags : [];\n\n    for (const tag of tags) {\n      const tagId = tag?.tag_id;\n\n      for (const [name, id] of Object.entries(solutionTagsMap)) {\n        if (tagId === id) {\n          solutionCounts[name] = (solutionCounts[name] || 0) + 1;\n        }\n      }\n    }\n  }\n\n  const totalSolutions = solutionCalls.length;\n\n  const solutionBreakdown = Object.entries(solutionCounts).map(([name, count]) => {\n    const countNumber = Number(count);\n    const percentage = totalSolutions > 0 ? Math.round((countNumber / totalSolutions) * 100) : 0;\n\n    return {\n      tag: `${name}: ${countNumber} (${percentage}%)`,\n      count: countNumber,\n      percentage\n    };\n  });\n\n  const mainStats = Object.entries(tagCounts).map(([tag, count]) => {\n    const percentage = totalCalls > 0 ? Math.round((count / totalCalls) * 100) : 0;\n    return {\n      tag: `${tag}: ${count} (${percentage}%)`,\n      count,\n      percentage\n    };\n  });\n\n  return {\n    mainStats,\n    totalCalls,\n    Solutions_used: solutionBreakdown\n  };\n};\n",
+                        "packageJson": "{}"
+                      },
+                      "inputUiInfo": {
+                        "customizedInputs": {}
+                      },
+                      "errorHandlingOptions": {
+                        "retryOnFailure": {
+                          "value": false
+                        },
+                        "continueOnFailure": {
+                          "value": false
+                        }
+                      }
+                    },
+                    "nextAction": {
+                      "name": "step_6",
+                      "skip": false,
+                      "type": "CODE",
+                      "valid": true,
+                      "settings": {
+                        "input": {
+                          "mainTags": "{{step_2}}",
+                          "solutions": "{{step_5}}",
+                          "objections": "{{step_4}}"
+                        },
+                        "sourceCode": {
+                          "code": "export const code = async (inputs) => {\n  const mainStats = inputs.mainTags?.mainStats?.filter(tag => tag.count > 0) || [];\n  const totalCalls = inputs.mainTags?.totalCalls || 0;\n\n  const objections = inputs.objections?.RIP_objections?.filter(tag => tag.count > 0) || [];\n  const totalRip = inputs.mainTags?.mainStats?.find(tag => tag.tag.startsWith(\"RIP\"))?.count || 0;\n\n  const solutions = inputs.solutions?.Solutions_used?.filter(tag => tag.count > 0) || [];\n  const totalSolutions = inputs.solutions?.mainStats?.find(tag => tag.tag.startsWith(\"Already have working solution\"))?.count || 0;\n\n  const format = (tag, count, percentage) => `• ${tag} : *${count}* (${percentage}%)`;\n  const formatObjection = (tag, count, percentage) => `• ${tag} : *${count} appels* (${percentage}% sur les ${totalRip} RIP)`;\n  const formatSolution = (tag, count, percentage) => `• ${tag} : *${count} appels* (${percentage}%)`;\n\n  const formattedMain = mainStats.map(t => format(t.tag.split(':')[0], t.count, t.percentage)).join('\\n');\n  const formattedObjections = objections.map(t => formatObjection(t.tag, t.count, t.percentage)).join('\\n');\n  const formattedSolutions = solutions.map(t => formatSolution(t.tag.split(':')[0], t.count, t.percentage)).join('\\n');\n\n  return {\n    totalCalls,\n    totalRip,\n    totalSolutions,\n    mainText: formattedMain,\n    objectionText: formattedObjections,\n    solutionText: formattedSolutions\n  };\n};\n",
+                          "packageJson": "{}"
+                        },
+                        "inputUiInfo": {
+                          "customizedInputs": {}
+                        },
+                        "errorHandlingOptions": {
+                          "retryOnFailure": {
+                            "value": false
+                          },
+                          "continueOnFailure": {
+                            "value": false
+                          }
+                        }
+                      },
+                      "nextAction": {
+                        "name": "step_9",
+                        "skip": false,
+                        "type": "CODE",
+                        "valid": true,
+                        "settings": {
+                          "input": {},
+                          "sourceCode": {
+                            "code": "export const code = async () => {\n  const now = new Date();\n  const day = now.getDay(); // 0 = dimanche\n  const diffToMonday = day === 0 ? -6 : 1 - day;\n\n  const monday = new Date(now);\n  monday.setDate(now.getDate() + diffToMonday);\n\n  const sunday = new Date(monday);\n  sunday.setDate(monday.getDate() + 6);\n\n  const format = (d) =>\n    d.toLocaleDateString(\"fr-FR\", {\n      day: \"numeric\",\n      month: \"long\"\n    });\n\n  const label = `📅 Semaine du ${format(monday)} au ${format(sunday)}`;\n\n  return { weekLabel: label };\n};\n",
+                            "packageJson": "{}"
+                          },
+                          "inputUiInfo": {
+                            "customizedInputs": {}
+                          },
+                          "errorHandlingOptions": {
+                            "retryOnFailure": {
+                              "value": false
+                            },
+                            "continueOnFailure": {
+                              "value": false
+                            }
+                          }
+                        },
+                        "nextAction": {
+                          "name": "step_8",
+                          "skip": false,
+                          "type": "PIECE",
+                          "valid": true,
+                          "settings": {
+                            "input": {
+                              "auth": "{{connections['XtjHpj0BEUf2hCE0RW2U8']}}",
+                              "text": "{{step_9['weekLabel']}}",
+                              "blocks": [
+                                {
+                                  "text": {
+                                    "text": ":bar_chart: *Résumé des appels analysés cette semaine* : *{{step_6['totalCalls']}} appels*",
+                                    "type": "mrkdwn"
+                                  },
+                                  "type": "section"
+                                },
+                                {
+                                  "text": {
+                                    "text": ":label: *Principaux Tags* :\n{{step_6['mainText']}}",
+                                    "type": "mrkdwn"
+                                  },
+                                  "type": "section"
+                                },
+                                {
+                                  "text": {
+                                    "text": ":brain: *Objections détectées dans les appels RIP* (*{{step_6['totalRip']}} appels*) :\n_! Un même appel peut contenir plusieurs objections !_\n{{step_6['objectionText']}}",
+                                    "type": "mrkdwn"
+                                  },
+                                  "type": "section"
+                                },
+                                {
+                                  "text": {
+                                    "text": ":bulb: *Solutions mentionnées dans les {{step_6['totalSolutions']}} appels \"Already have working solution\"* :\n{{step_6['solutionText']}}",
+                                    "type": "mrkdwn"
+                                  },
+                                  "type": "section"
+                                }
+                              ],
+                              "channel": "C096FTK7F0U",
+                              "username": "BDR Report Agent"
+                            },
+                            "pieceName": "@activepieces/piece-slack",
+                            "pieceType": "OFFICIAL",
+                            "actionName": "send_channel_message",
+                            "inputUiInfo": {
+                              "customizedInputs": {}
+                            },
+                            "packageType": "REGISTRY",
+                            "pieceVersion": "0.9.4",
+                            "errorHandlingOptions": {
+                              "retryOnFailure": {
+                                "value": false
+                              },
+                              "continueOnFailure": {
+                                "value": false
+                              }
+                            }
+                          },
+                          "nextAction": {
+                            "name": "step_12",
+                            "skip": false,
+                            "type": "PIECE",
+                            "valid": true,
+                            "settings": {
+                              "input": {
+                                "markdown": "{{step_8['message']['ts']}}{{step_8['message']['blocks']}}"
+                              },
+                              "pieceName": "@activepieces/piece-forms",
+                              "pieceType": "OFFICIAL",
+                              "actionName": "return_response",
+                              "inputUiInfo": {
+                                "customizedInputs": {}
+                              },
+                              "packageType": "REGISTRY",
+                              "pieceVersion": "0.4.3",
+                              "errorHandlingOptions": {
+                                "retryOnFailure": {
+                                  "value": false
+                                },
+                                "continueOnFailure": {
+                                  "value": false
+                                }
+                              }
+                            },
+                            "displayName": "Respond on UI"
+                          },
+                          "displayName": "Send Message To A Channel"
+                        },
+                        "displayName": "get_current_week_range"
+                      },
+                      "displayName": "prepare_summary"
+                    },
+                    "displayName": "compute_solutions"
+                  },
+                  "displayName": "compute_objections"
+                },
+                "displayName": "compute_main_tags"
+              },
+              "displayName": "get_ringover_tags"
+            },
+            "displayName": "get_ringover_calls"
+          },
+          {
+            "name": "step_11",
+            "skip": false,
+            "type": "PIECE",
+            "valid": true,
+            "settings": {
+              "input": {},
+              "pieceName": "@activepieces/piece-forms",
+              "pieceType": "OFFICIAL",
+              "actionName": "return_response",
+              "inputUiInfo": {
+                "customizedInputs": {}
+              },
+              "packageType": "REGISTRY",
+              "pieceVersion": "0.4.3",
+              "errorHandlingOptions": {
+                "retryOnFailure": {
+                  "value": false
+                },
+                "continueOnFailure": {
+                  "value": false
+                }
+              }
+            },
+            "displayName": "Respond on UI"
+          }
+        ],
+        "settings": {
+          "branches": [
+            {
+              "branchName": "Branch 1",
+              "branchType": "CONDITION",
+              "conditions": [
+                [
+                  {
+                    "operator": "TEXT_EXACTLY_MATCHES",
+                    "firstValue": "{{trigger['message']}}",
+                    "secondValue": "delete",
+                    "caseSensitive": false
+                  }
+                ]
+              ]
+            },
+            {
+              "branchName": "Branch 2",
+              "branchType": "CONDITION",
+              "conditions": [
+                [
+                  {
+                    "operator": "TEXT_CONTAINS",
+                    "firstValue": "{{trigger['message']}}",
+                    "secondValue": "report",
+                    "caseSensitive": false
+                  }
+                ]
+              ]
+            },
+            {
+              "branchName": "Otherwise",
+              "branchType": "FALLBACK"
+            }
+          ],
+          "inputUiInfo": {
+            "customizedInputs": {}
+          },
+          "executionType": "EXECUTE_FIRST_MATCH"
+        },
+        "displayName": "Router"
+      }
+    },
+    "valid": true,
+    "connectionIds": [
+      "XtjHpj0BEUf2hCE0RW2U8"
+    ],
+    "schemaVersion": "2"
+  },
+  "blogUrl": ""
+}
