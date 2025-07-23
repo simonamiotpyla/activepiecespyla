@@ -1,4 +1,4 @@
-# activepieces
+# info
 
 
   // Mapping des tags principaux
